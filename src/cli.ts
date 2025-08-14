@@ -430,7 +430,9 @@ program
       }
 
       spinner.text = "Inicializando LLM provider...";
-      const llmProvider = await LLMProviderFactory.createDefault();
+      const llmProvider = await LLMProviderFactory.create(
+        LLMProviderFactory.loadFromEnv()
+      );
       const responseGenerator = new ResponseGenerator(search, llmProvider);
       const sessionManager = new ChatSessionManager();
 
