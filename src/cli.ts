@@ -59,7 +59,7 @@ const program = new Command();
 program
   .name("vivadoc")
   .description("Documentação viva com chatbot de IA para repositórios")
-  .version("0.1.0");
+  .version("1.0.1");
 
 program
   .command("init")
@@ -584,10 +584,11 @@ program
         }
       });
 
-      app.use(express.static(join(__dirname, "../public")));
+      const publicPath = join(__dirname, "public");
+      app.use(express.static(publicPath));
 
       app.get("*", (_req, res) => {
-        res.sendFile(join(__dirname, "../public/index.html"));
+        res.sendFile(join(publicPath, "index.html"));
       });
 
       app.listen(port, () => {
