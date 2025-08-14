@@ -1,51 +1,78 @@
 {
   "name": "vivadoc",
-  "version": "0.1.0",
-  "description": "Documentação viva com chatbot de IA para repositórios",
+  "version": "1.0.0",
+  "description": "AI-powered living documentation for codebases - Chat with your code using natural language",
   "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "bin": {
     "vivadoc": "dist/cli.js"
   },
   "scripts": {
-    "build": "tsc",
+    "build": "npm run clean && tsc && npm run copy-assets",
+    "clean": "rm -rf dist",
+    "copy-assets": "cp -r public dist/ && cp README.md dist/",
     "dev": "tsx src/cli.ts dev",
     "start": "node dist/cli.js",
-    "test": "vitest",
+    "test": "vitest run",
     "test:watch": "vitest --watch",
+    "test:coverage": "vitest run --coverage",
     "lint": "eslint src --ext .ts",
-    "lint:fix": "eslint src --ext .ts --fix"
+    "lint:fix": "eslint src --ext .ts --fix",
+    "typecheck": "tsc --noEmit",
+    "prepublishOnly": "npm run build"
   },
   "keywords": [
     "documentation",
     "ai",
     "chatbot",
     "code-search",
-    "semantic-search"
+    "semantic-search",
+    "developer-tools",
+    "llm",
+    "openai",
+    "ollama",
+    "typescript",
+    "react",
+    "nextjs",
+    "vue",
+    "svelte",
+    "angular"
   ],
-  "author": "",
+  "author": "Vivadoc Team <team@vivadoc.dev>",
   "license": "MIT",
+  "homepage": "https://github.com/vivadoc/vivadoc#readme",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/vivadoc/vivadoc.git"
+  },
+  "bugs": {
+    "url": "https://github.com/vivadoc/vivadoc/issues"
+  },
+  "files": [
+    "dist/",
+    "README.md",
+    "LICENSE"
+  ],
   "dependencies": {
-    "commander": "^11.1.0",
     "chalk": "^5.3.0",
-    "ora": "^7.0.1",
-    "glob": "^10.3.10",
-    "fast-glob": "^3.3.2",
-    "sqlite3": "^5.1.6",
-    "better-sqlite3": "^9.2.2",
-    "express": "^4.18.2",
+    "commander": "^11.1.0",
     "cors": "^2.8.5",
-    "helmet": "^7.1.0"
+    "express": "^4.18.2",
+    "fast-glob": "^3.3.2",
+    "glob": "^10.3.10",
+    "helmet": "^7.1.0",
+    "ora": "^7.0.1"
   },
   "devDependencies": {
-    "@types/node": "^20.10.0",
-    "@types/express": "^4.17.21",
     "@types/cors": "^2.8.17",
-    "typescript": "^5.3.0",
-    "tsx": "^4.6.0",
-    "vitest": "^1.0.0",
-    "eslint": "^8.55.0",
+    "@types/express": "^4.17.21",
+    "@types/node": "^20.10.0",
     "@typescript-eslint/eslint-plugin": "^6.13.0",
-    "@typescript-eslint/parser": "^6.13.0"
+    "@typescript-eslint/parser": "^6.13.0",
+    "eslint": "^8.55.0",
+    "tsx": "^4.6.0",
+    "typescript": "^5.3.0",
+    "vitest": "^1.0.0"
   },
   "engines": {
     "node": ">=18.0.0"
