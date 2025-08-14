@@ -59,7 +59,7 @@ const program = new Command();
 program
   .name("vivadoc")
   .description("Documentação viva com chatbot de IA para repositórios")
-  .version("0.1.0");
+  .version("1.0.1");
 
 program
   .command("init")
