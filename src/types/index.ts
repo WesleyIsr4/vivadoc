@@ -9,6 +9,21 @@ export interface ProjectConfig {
   chunkOverlap: number;
 }
 
+// Main configuration interface for Vivadoc
+export interface VivadocConfig {
+  name?: string;
+  root: string;
+  stack?: ProjectStack | 'auto';
+  llmProvider?: 'auto' | 'openai' | 'ollama' | 'mock';
+  includePatterns?: string[];
+  ignorePatterns?: string[];
+  maxFileSize?: number;
+  chunkSize?: number;
+  chunkOverlap?: number;
+  maxTokens?: number;
+  temperature?: number;
+}
+
 export type ProjectStack =
   | "nextjs"
   | "react"
@@ -18,6 +33,9 @@ export type ProjectStack =
   | "typescript"
   | "node"
   | "unknown";
+
+// Alias for backward compatibility
+export interface CodeChunk extends Chunk {}
 
 export interface Chunk {
   id: string;

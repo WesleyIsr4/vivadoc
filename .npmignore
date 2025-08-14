@@ -1,0 +1,63 @@
+# Source files (only dist/ goes to NPM)
+src/
+tsconfig.json
+jest.config.js
+.eslintrc.js
+
+# Development files  
+.git/
+.github/
+node_modules/
+tests/
+coverage/
+.nyc_output/
+
+# Build artifacts we don't want
+*.log
+*.tsbuildinfo
+.DS_Store
+Thumbs.db
+
+# Development configs
+.env*
+.vscode/
+.idea/
+
+# Test data and examples that don't belong in package
+examples/
+test-projects/
+docs/design-docs.md
+docs/API.md
+
+# Docker
+Dockerfile
+docker-compose.yml
+.dockerignore
+
+# Temporary files
+.tmp/
+.cache/
+*.tmp
+*.temp
+
+# OS files
+*.swp
+*.swo
+*~
+
+# Large files that bloat the package
+*.mp4
+*.avi
+*.mov
+*.mkv
+*.pdf
+*.zip
+*.tar.gz
+*.dmg
+
+# Keep these:
+# dist/ (build output)  
+# public/ (web assets)
+# README.md (documentation)
+# LICENSE (legal)
+# package.json (metadata)
