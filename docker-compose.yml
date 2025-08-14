@@ -1,0 +1,38 @@
+version: '3.8'
+
+services:
+  vivadoc:
+    build: .
+    ports:
+      - "3001:3001"
+    volumes:
+      - ./your-project:/workspace:ro
+      - vivadoc-data:/app/.vivadoc
+    environment:
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - OLLAMA_BASE_URL=http://ollama:11434
+    depends_on:
+      - ollama
+    restart: unless-stopped
+
+  ollama:
+    image: ollama/ollama:latest
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama-models:/root/.ollama
+    environment:
+      - OLLAMA_MODELS=/root/.ollama/models
+    restart: unless-stopped
+    # Uncomment for GPU support
+    # deploy:
+    #   resources:
+    #     reservations:
+    #       devices:
+    #         - driver: nvidia
+    #           count: 1
+    #           capabilities: [gpu]
+
+volumes:
+  vivadoc-data:
+  ollama-models:

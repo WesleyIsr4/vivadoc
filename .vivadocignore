@@ -1,0 +1,43 @@
+# Vivadoc ignore file
+# Patterns to exclude from indexing
+
+# Dependencies
+node_modules/
+vendor/
+
+# Build outputs
+dist/
+build/
+out/
+.next/
+coverage/
+
+# Logs
+*.log
+logs/
+
+# Environment files
+.env*
+secrets/
+private/
+
+# IDE files
+.vscode/settings.json
+.idea/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+*.cache
+
+# Minified files
+*.min.js
+*.min.css
+*.map
+
+# Add your custom patterns below

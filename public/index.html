@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vivadoc - Chat com IA</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+          sans-serif;
+        background: #f8fafc;
+        color: #1e293b;
+        line-height: 1.6;
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .header {
+        text-align: center;
+        margin-bottom: 30px;
+        padding: 30px 0;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        border-radius: 16px;
+      }
+
+      .header h1 {
+        font-size: 2.5rem;
+        margin-bottom: 10px;
+        font-weight: 700;
+      }
+
+      .header p {
+        font-size: 1.1rem;
+        opacity: 0.9;
+      }
+
+      .chat-container {
+        background: white;
+        border-radius: 16px;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+      }
+
+      .chat-messages {
+        flex: 1;
+        padding: 20px;
+        overflow-y: auto;
+        min-height: 400px;
+        max-height: 500px;
+      }
+
+      .message {
+        margin-bottom: 20px;
+        padding: 15px;
+        border-radius: 12px;
+        max-width: 80%;
+      }
+
+      .message.user {
+        background: #667eea;
+        color: white;
+        margin-left: auto;
+      }
+
+      .message.assistant {
+        background: #f1f5f9;
+        border: 1px solid #e2e8f0;
+        margin-right: auto;
+      }
+
+      .message.error {
+        background: #fef2f2;
+        color: #dc2626;
+        border: 1px solid #fecaca;
+      }
+
+      .message-content {
+        white-space: pre-wrap;
+        line-height: 1.5;
+      }
+
+      .message-time {
+        font-size: 12px;
+        opacity: 0.7;
+        margin-top: 5px;
+      }
+
+      .citations {
+        margin-top: 10px;
+        padding: 10px;
+        background: rgba(102, 126, 234, 0.1);
+        border-radius: 8px;
+        font-size: 14px;
+      }
+
+      .citation {
+        display: block;
+        color: #667eea;
+        text-decoration: none;
+        font-family: monospace;
+        margin-bottom: 5px;
+      }
+
+      .citation:hover {
+        text-decoration: underline;
+      }
+
+      .chat-input-area {
+        padding: 20px;
+        border-top: 1px solid #e2e8f0;
+        background: #fafafa;
+      }
+
+      .chat-input-box {
+        display: flex;
+        gap: 10px;
+        align-items: flex-end;
+      }
+
+      .chat-input {
+        flex: 1;
+        padding: 15px;
+        border: 2px solid #e2e8f0;
+        border-radius: 12px;
+        font-size: 16px;
+        resize: vertical;
+        min-height: 50px;
+        max-height: 120px;
+        font-family: inherit;
+      }
+
+      .chat-input:focus {
+        outline: none;
+        border-color: #667eea;
+      }
+
+      .send-button {
+        padding: 15px 25px;
+        background: #667eea;
+        color: white;
+        border: none;
+        border-radius: 12px;
+        font-size: 16px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background 0.2s;
+        min-height: 50px;
+      }
+
+      .send-button:hover:not(:disabled) {
+        background: #5a67d8;
+      }
+
+      .send-button:disabled {
+        background: #cbd5e0;
+        cursor: not-allowed;
+      }
+
+      .loading {
+        text-align: center;
+        padding: 40px;
+        color: #64748b;
+      }
+
+      .spinner {
+        display: inline-block;
+        width: 20px;
+        height: 20px;
+        border: 3px solid #e2e8f0;
+        border-radius: 50%;
+        border-top-color: #667eea;
+        animation: spin 1s ease-in-out infinite;
+        margin-right: 10px;
+      }
+
+      @keyframes spin {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+
+      .welcome-message {
+        text-align: center;
+        padding: 60px 20px;
+        color: #64748b;
+      }
+
+      .welcome-message h3 {
+        font-size: 1.5rem;
+        margin-bottom: 15px;
+        color: #1e293b;
+      }
+
+      .suggestions {
+        margin-top: 30px;
+        display: grid;
+        gap: 10px;
+        max-width: 600px;
+        margin-left: auto;
+        margin-right: auto;
+      }
+
+      .suggestion-item {
+        padding: 15px;
+        background: white;
+        border: 1px solid #e2e8f0;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: all 0.2s;
+        text-align: left;
+      }
+
+      .suggestion-item:hover {
+        border-color: #667eea;
+        background: #f8faff;
+      }
+
+      .typing-indicator {
+        display: flex;
+        align-items: center;
+        padding: 15px;
+        background: #f1f5f9;
+        border-radius: 12px;
+        margin-bottom: 20px;
+        max-width: 80%;
+      }
+
+      .typing-dots {
+        display: flex;
+        gap: 4px;
+      }
+
+      .dot {
+        width: 8px;
+        height: 8px;
+        background: #667eea;
+        border-radius: 50%;
+        animation: typing 1.4s ease-in-out infinite both;
+      }
+
+      .dot:nth-child(1) { animation-delay: -0.32s; }
+      .dot:nth-child(2) { animation-delay: -0.16s; }
+
+      @keyframes typing {
+        0%, 80%, 100% {
+          transform: scale(0);
+          opacity: 0.5;
+        }
+        40% {
+          transform: scale(1);
+          opacity: 1;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="header">
+        <h1>🤖 Vivadoc</h1>
+        <p>Converse com seu código usando inteligência artificial</p>
+      </div>
+
+      <div class="chat-container">
+        <div class="chat-messages" id="chatMessages">
+          <div class="welcome-message">
+            <h3>Bem-vindo ao Chat Vivadoc!</h3>
+            <p>Faça perguntas sobre seu código em linguagem natural. O sistema vai buscar e analisar informações relevantes para responder.</p>
+            
+            <div class="suggestions">
+              <div class="suggestion-item" onclick="sendSuggestion('Como funciona o sistema de busca híbrida?')">
+                "Como funciona o sistema de busca híbrida?"
+              </div>
+              <div class="suggestion-item" onclick="sendSuggestion('Explique a arquitetura do projeto')">
+                "Explique a arquitetura do projeto"
+              </div>
+              <div class="suggestion-item" onclick="sendSuggestion('Onde está implementado o cross-encoder reranking?')">
+                "Onde está implementado o cross-encoder reranking?"
+              </div>
+              <div class="suggestion-item" onclick="sendSuggestion('Como usar os providers de LLM?')">
+                "Como usar os providers de LLM?"
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="chat-input-area">
+          <div class="chat-input-box">
+            <textarea
+              class="chat-input"
+              id="chatInput"
+              placeholder="Digite sua pergunta sobre o código..."
+              onkeypress="handleKeyPress(event)"
+            ></textarea>
+            <button class="send-button" id="sendButton" onclick="sendMessage()">
+              Enviar
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      let currentSessionId = null;
+      let isLoading = false;
+
+      function handleKeyPress(event) {
+        if (event.key === 'Enter' && !event.shiftKey) {
+          event.preventDefault();
+          sendMessage();
+        }
+      }
+
+      function sendSuggestion(text) {
+        document.getElementById('chatInput').value = text;
+        sendMessage();
+      }
+
+      async function sendMessage() {
+        const input = document.getElementById('chatInput');
+        const message = input.value.trim();
+        
+        if (!message || isLoading) return;
+
+        // Limpar input
+        input.value = '';
+        
+        // Adicionar mensagem do usuário
+        addMessage('user', message);
+        
+        // Mostrar indicador de digitação
+        showTypingIndicator();
+        
+        isLoading = true;
+        updateSendButton();
+
+        try {
+          const response = await fetch('/api/chat', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              message: message,
+              sessionId: currentSessionId
+            }),
+          });
+
+          const data = await response.json();
+
+          if (response.ok) {
+            // Salvar session ID
+            if (data.sessionId) {
+              currentSessionId = data.sessionId;
+            }
+
+            // Adicionar resposta da IA
+            addMessage('assistant', data.message.content, data.message.citations);
+          } else {
+            addMessage('error', data.error || 'Erro na comunicação com o servidor');
+          }
+        } catch (error) {
+          console.error('Erro no chat:', error);
+          addMessage('error', 'Erro de conexão. Verifique se o servidor está rodando.');
+        } finally {
+          hideTypingIndicator();
+          isLoading = false;
+          updateSendButton();
+        }
+      }
+
+      function addMessage(type, content, citations = null) {
+        const messagesContainer = document.getElementById('chatMessages');
+        
+        // Remover mensagem de boas-vindas se existir
+        const welcome = messagesContainer.querySelector('.welcome-message');
+        if (welcome) {
+          welcome.remove();
+        }
+
+        const messageDiv = document.createElement('div');
+        messageDiv.className = `message ${type}`;
+        
+        const now = new Date();
+        const timeStr = now.toLocaleTimeString();
+        
+        let citationsHtml = '';
+        if (citations && citations.length > 0) {
+          citationsHtml = `
+            <div class="citations">
+              <strong>📎 Fontes:</strong><br>
+              ${citations.map(citation => 
+                `<a href="#" class="citation">${citation.filePath}:${citation.startLine}-${citation.endLine}</a>`
+              ).join('')}
+            </div>
+          `;
+        }
+
+        messageDiv.innerHTML = `
+          <div class="message-content">${escapeHtml(content)}</div>
+          ${citationsHtml}
+          <div class="message-time">${timeStr}</div>
+        `;
+
+        messagesContainer.appendChild(messageDiv);
+        messagesContainer.scrollTop = messagesContainer.scrollHeight;
+      }
+
+      function showTypingIndicator() {
+        const messagesContainer = document.getElementById('chatMessages');
+        const typingDiv = document.createElement('div');
+        typingDiv.id = 'typingIndicator';
+        typingDiv.className = 'typing-indicator';
+        typingDiv.innerHTML = `
+          <div class="typing-dots">
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+          </div>
+          <span style="margin-left: 10px; color: #64748b;">IA está pensando...</span>
+        `;
+        messagesContainer.appendChild(typingDiv);
+        messagesContainer.scrollTop = messagesContainer.scrollHeight;
+      }
+
+      function hideTypingIndicator() {
+        const typingIndicator = document.getElementById('typingIndicator');
+        if (typingIndicator) {
+          typingIndicator.remove();
+        }
+      }
+
+      function updateSendButton() {
+        const button = document.getElementById('sendButton');
+        button.disabled = isLoading;
+        button.textContent = isLoading ? 'Enviando...' : 'Enviar';
+      }
+
+      function escapeHtml(text) {
+        const div = document.createElement('div');
+        div.textContent = text;
+        return div.innerHTML;
+      }
+
+      // Focar no input ao carregar
+      document.addEventListener('DOMContentLoaded', () => {
+        document.getElementById('chatInput').focus();
+      });
+    </script>
+  </body>
+</html>

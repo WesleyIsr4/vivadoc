@@ -1,0 +1,53 @@
+{
+  "name": "vivadoc",
+  "version": "0.1.0",
+  "description": "Documentação viva com chatbot de IA para repositórios",
+  "main": "dist/index.js",
+  "bin": {
+    "vivadoc": "dist/cli.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsx src/cli.ts dev",
+    "start": "node dist/cli.js",
+    "test": "vitest",
+    "test:watch": "vitest --watch",
+    "lint": "eslint src --ext .ts",
+    "lint:fix": "eslint src --ext .ts --fix"
+  },
+  "keywords": [
+    "documentation",
+    "ai",
+    "chatbot",
+    "code-search",
+    "semantic-search"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "commander": "^11.1.0",
+    "chalk": "^5.3.0",
+    "ora": "^7.0.1",
+    "glob": "^10.3.10",
+    "fast-glob": "^3.3.2",
+    "sqlite3": "^5.1.6",
+    "better-sqlite3": "^9.2.2",
+    "express": "^4.18.2",
+    "cors": "^2.8.5",
+    "helmet": "^7.1.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.10.0",
+    "@types/express": "^4.17.21",
+    "@types/cors": "^2.8.17",
+    "typescript": "^5.3.0",
+    "tsx": "^4.6.0",
+    "vitest": "^1.0.0",
+    "eslint": "^8.55.0",
+    "@typescript-eslint/eslint-plugin": "^6.13.0",
+    "@typescript-eslint/parser": "^6.13.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

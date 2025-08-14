@@ -1,0 +1,29 @@
+{
+  "name": "Projeto Vivadoc",
+  "root": "/home/wesley/development/me/design-doc",
+  "stack": "unknown",
+  "ignorePatterns": [
+    "node_modules/**",
+    "dist/**",
+    ".next/**",
+    "build/**",
+    "out/**",
+    "coverage/**",
+    ".git/**",
+    "*.log",
+    ".env*"
+  ],
+  "includePatterns": [
+    "src/**/*",
+    "components/**/*",
+    "pages/**/*",
+    "app/**/*",
+    "lib/**/*",
+    "utils/**/*",
+    "*.md",
+    "*.mdx"
+  ],
+  "maxFileSize": 1048576,
+  "chunkSize": 1000,
+  "chunkOverlap": 200
+}
